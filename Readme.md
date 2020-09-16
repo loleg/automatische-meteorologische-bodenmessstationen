@@ -1,110 +1,16 @@
-# Gemeindescan Data Package builder
+# Weather stations of the automatic monitoring network
 
-A template to generate valid [Gemeindescan](https://bitbucket.org/cividi/gemeindescan-webui) datapackages.
+An open data package in Gemeindescan (Swiss municipalities) format made with the [QGIS Exporter](https://github.com/GispoCoding/gemeindescan-exporter) and [Package Builder](https://github.com/cividi/gemeindescan-package-builder).
 
-## Quick Start
+## Source
 
-- add your styled geojsons (according to the simplestyles spec) in `project/data/`
-- add your snapshot metadata in the `project.yml`
-- install [YAML support](https://yaml.readthedocs.io/en/latest/install.html) using `python package-builder.py`
-- run `python package-builder.py` after changing `project` to your folder/yml file name. For more details refer to the spec description below.
+This geodata is obtained from [Weather stations of the automatic monitoring network](https://opendata.swiss/en/dataset/automatische-meteorologische-bodenmessstationen) at opendata.swiss
 
-## Walkthrough
+> SwissMetNet, the automatic monitoring network of MeteoSwiss, comprises about 160 automatic monitoring stations. These stations deliver a multitude of current data on the weather and climate in Switzerland every ten minutes. The monitoring network is supplemented by 140 automatic precipitation stations. Together, these 300 stations form the basis for the creation of reliable local weather forecasts as well as severe weather and flood warnings.
 
-Adapt the `template.yml` to capture your default settings for a single snapshot and an entry in the legend.
+- Downloaded: September 16, 2020
+- Modified: October 25, 2019
+- Publishers: Bundesamt für Meteorologie und Klimatologie
+- Terms: Open use. Must provide the source.
 
-Then copy the `sample-project`, add your styled geojsons (according to the simplestyles spec) in `project/data/` and add your snapshot metadata in the `project.yml`. Then just run `python package-builder.py` after changing `project` to your folder/yml file name. For more destails refer to the spec description below.
-
-```sh
-export PROJECT=project
-mkdir $PROJECT && mkdir $PROJECT/data && mkdir $PROJECT/snapshots
-cp sample-project/sample-project.yml $PROJECT/$PROJECT.yml
-
-# Edit new .yml, add data
-
-pip install -r requirements.txt
-python package-builder.py -p $PROJECT
-```
-
-## CLI options
-
-Run
-
-```sh
-python package-builder.py --help
-```
-
-to see available options.
-
-## Makefile
-
-```sh
-
-export PROJECT="project"
-make init
-
-# Edit project/project.yml, add data, ...
-
-make
-
-``` 
-
-## project.yml Spec
-
-### legends
-
-This is where the Legends entries live. The top level item has to match the resource name given in the snapshot resources, which is also what the geojson is called.
-
-```yml
-legends:
-    "sample-hr-adressen":
-        "Gebäude mit Handelsregistereintrag":
-            fillColor: "#93bddf"
-            fillOpacity: 1
-            stroke: "#000000"
-            strokeWidth: 2
-            strokeOpacity: 1
-            primary: true
-```
-
-Each entry becomes one legend item, with `Gebäude mit Handelsregistereintrag` becoming the label.
-In the Styling as little or as many of the possible entries (fillColor, fillOpacity, stroke, strokeWidth, strokeOpacity and primary) can be used. If a value is not present its counterpart from the template.yml is used.
-
-Entries with the `primary` flag are shown all on all map versions, whereas non primary entries are hidden by default and can be expanded by the user.
-
-### snapshots
-
-Each entry here becomes a .json file inside the `snapshots/` folder after running the builder.
-
-```yml
-snapshots:
-    - sample-hr-adressen:
-        title: "Gebäude mit Handelsregistereinträgen"
-        description: "Gebäude mit Adressen, die mindestens einen Handelsregistereintrag aufweisen."
-        keywords:
-            - sample
-        gemeindescan_meta:
-            topic: "Struktur"
-        bounds:
-            - "geo:47.073023,8.359509"
-            - "geo:47.076802,8.365662"
-        resources:
-            - "sample-hr-adressen":
-                mediatype: "application/geo+json"
-        sources:
-            -
-                url: "https://www.housing-stat.ch"
-                title: "Handelsregistereinträge: Handelsregister Kanton Luzern"
-            -
-                url: "https://rawi.lu.ch/themen/amtliche_vermessung"
-                title: "Bodenbedeckung, Amtliche Vermessung, Kanton Luzern"
-        attribution: ""
-        maintainers:
-            -
-                name: "Luis Gisler"
-                web: "https://github.com/cividitech/"
-```
-
-`Bounds` are the view bounds used to position the snapshot on screen upon loading. `Resources` are used to load geojsons from the `data/` directory. Note that the resource name has to match the geojson file name as well as the corresponding legend name to work properly. Whereas the snapshot name (in this case also `sample-hr-adressen`) is used for the resulting .json file in `snapshots/` and is unrelated to the geojson and legends.
-
-Addionally, `sources`, an attribution and additional maintainers can be specified and will be added to the ones in `template.yml`.
+[<img src="https://opendata.swiss/content/themes/wp-ogdch-theme/assets/images/terms/terms_by.svg" width="120">](https://opendata.swiss/en/terms-of-use#terms_by)
